@@ -109,14 +109,22 @@
    <th>No</th>
    <th>Name</th>
    <th>Email</th>
-   {{-- <th>Roles</th> --}}
+   <th>Role</th>
    <th>Action</th>
  </tr>
+
  @foreach ($data as $key => $user)
   <tr>
     <td>{{ $user->id }}</td>
     <td>{{ $user->name }}</td>
     <td>{{ $user->email }}</td>
+    <td>
+        @if(!empty($user->roles))
+            @foreach($user->roles as $v)
+             <label class="badge badge-success">{{ $v->name }}</label>
+            @endforeach
+        @endif
+    </td>
     {{-- <td>
       @if(!empty($user->getRoleNames()))
         @foreach($user->getRoleNames() as $v)
@@ -134,12 +142,7 @@
     <td>
         {{-- <a class="btn btn-info" href="{{route('users.show', ['id' => $user->id])}}">Show</a> --}}
         <a class="btn btn-info" href="{{ route('users.edit', ['id' => $user->id])}}">Edit</a>
-        <form action="{{ route('users.destroy', ['id' => $user->id])}}" method="post" class="form-delete">
-          @csrf
-          @method('delete')
-          <button class="btn btn-danger">Delete</button>
-        </form>
-
+        <a class="btn btn-danger" href="{{ route('users.destroy', ['id' => $user->id])}}">Delete</a>
      </td>
   </tr>
  @endforeach

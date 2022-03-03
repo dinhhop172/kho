@@ -29,7 +29,7 @@ Auth::routes();
         Route::post('store', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
         Route::get('/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
         Route::put('/{id}/update', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
-        Route::delete('/{id}/delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('/{id}/delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
         Route::get('/search', [App\Http\Controllers\UserController::class, 'search'])->name('users.search');
 
 

@@ -120,9 +120,6 @@
                 @foreach($role->permissions as $value)
                     <option value="{{$value->name}}" selected>{{$value->name}}</option>
                 @endforeach
-                {{-- @foreach($per as $permission)
-                    <option value="{{$permission->name}}">{{$permission->name}}</option>
-                @endforeach --}}
             </select>
         </div>
     </div>

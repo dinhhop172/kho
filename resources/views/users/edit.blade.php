@@ -130,7 +130,17 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Confirm Password:</strong>
-            <input type="password" placeholder='Password' name='password' class="form-control" value="{{$user->password}}">        </div>
+            <input type="password" placeholder='Password' name='re_password' class="form-control" value="{{$user->password}}">        </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Roles</strong>
+            <select class="form-control select2" name="roles[]" multiple="multiple">
+                @foreach($user->roles as $value)
+                    <option value="{{$value->name}}" selected>{{$value->name}}</option>
+                @endforeach
+            </select>
         </div>
     </div>
     {{-- <div class="col-xs-12 col-sm-12 col-md-12">
@@ -145,4 +155,17 @@
   </form>
 </div>
 @endforeach
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function(){
+            $('.select2').select2({
+                tags: true,
+                placeholder: "Select an option",
+                allowClear: true,
+                tokenSeparators: [',']
+            });
+        });
+
+    </script>
 @endsection

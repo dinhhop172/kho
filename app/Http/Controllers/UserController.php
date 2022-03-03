@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -40,7 +41,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users/create');
+        $roles = Role::all();
+        return view('users/create', compact('roles'));
     }
 
 
@@ -53,8 +55,8 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $data = $request->all();
-        $data['password'] = Hash::make($request->password);
-        $this->userService->getCreate($request);
+        $data['password'] = Hash::make($data['password']);
+        $this->userService->getCreate($data);
         return redirect(route('users.index'));
     }
     public function edit($id)
@@ -65,9 +67,9 @@ class UserController extends Controller
     }
     public function update(UpdateUserRequest $request, $id)
     {
-        // $data = $request->all();
-        // $data['password'] = Hash::make($request->password);
-        $this->userService->getUpdate($request, $id);
+        $data = $request->all();
+        $data['password'] = Hash::make($data['password']);
+        $this->userService->getUpdate($data, $id);
         return redirect(route('users.index'));
     }
     public function destroy($id)

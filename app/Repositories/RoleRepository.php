@@ -40,12 +40,24 @@ class RoleRepository
         return $this->role->orderBy('id', 'DESC')->paginate(5);
     }
 
+    /**
+     * getById
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function getById($id)
     {
         return $this->role
             ->where('id', $id)
             ->get();
     }
+    /**
+     * save
+     *
+     * @param  mixed $data
+     * @return void
+     */
     public function save($data)
     {
         try {
@@ -68,6 +80,13 @@ class RoleRepository
 
     }
 
+    /**
+     * update
+     *
+     * @param  mixed $data
+     * @param  mixed $id
+     * @return void
+     */
     public function update($data, $id)
     {
         try {
@@ -91,15 +110,26 @@ class RoleRepository
 
     }
 
+    /**
+     * delete
+     *
+     * @param  mixed $id
+     * @return void
+     */
     public function delete($id)
     {
 
         $role = $this->role->find($id);
-        // $role->permissions()->detach();
         $role->delete();
 
         return $role;
     }
+    /**
+     * search
+     *
+     * @param  mixed $name
+     * @return void
+     */
     public function search($name)
     {
         return $this->role->where('name', 'like', '%'.$name.'%')->latest('id')->paginate(5);

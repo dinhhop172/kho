@@ -145,6 +145,9 @@
         $(document).ready(function(){
             $('.select2').select2({
                 placeholder: "Choose some permission",
+                tags: true,
+                allowClear: true,
+                tokenSeparators: [',']
             });
         });
     </script>

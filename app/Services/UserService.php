@@ -43,18 +43,16 @@ class UserService
     {
         return $this->userRepository->getById($id);
     }
-    
+
     public function getCreate($data)
     {
         $result = $this->userRepository->save($data);
         return $result;
     }
 
-    
-    public function getUpdate($request, $id)
+
+    public function getUpdate($data, $id)
     {
-        $data = $request->all();
-        $data['password'] = Hash::make($request->password);
         $user = $this->userRepository->update($data, $id);
         return $user;
     }
@@ -69,5 +67,5 @@ class UserService
         return $this->userRepository->search($name);
     }
 
-    
+
 }

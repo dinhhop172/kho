@@ -37,14 +37,6 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white " href="{{ route('categories.index') }}">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">table_view</i>
-          </div>
-          <span class="nav-link-text ms-1">Manage Users</span>
-        </a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link text-white " href="../pages/virtual-reality.html">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">view_in_ar</i>
@@ -88,64 +80,72 @@
   </div>
 </aside>
 @endsection
-
 @section('content')
 
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Roles Management</h2>
+            <h2>Edit Role</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
-            <form action="{{route('roles.search')}}" method="get">
-              <input type="text" name="search" placeholder="search name...">
-            </form>
+            <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
         </div>
     </div>
 </div>
 
 
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-  <p>{{ $message }}</p>
-</div>
+@if ($errors->any())
+  <div class="alert alert-danger">
+    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+    <ul>
+       @foreach ($errors->all() as $error)
+         <li>{{ $error }}</li>
+       @endforeach
+    </ul>
+  </div>
 @endif
 
-
-<table class="table table-bordered">
- <tr>
-   <th>Id</th>
-   <th>Name</th>
-   <th>Permission</th>
-   <th>Action</th>
- </tr>
- @foreach ($data as $key => $role)
-  <tr>
-    <td>{{ $role->id }}</td>
-    <td>{{ $role->name }}</td>
-    <td>
-        @if(!empty($role->permissions))
-            @foreach($role->permissions as $v)
-            <label class="badge badge-success">{{ $v->name }},</label>
-            @endforeach
-        @endif
-    </td>
-
-    <td>
-        {{-- <a class="btn btn-info" href="{{route('users.show', ['id' => $user->id])}}">Show</a> --}}
-        <a class="btn btn-info" href="{{ route('roles.edit', $role->id)}}">Edit</a>
-        <a class="btn btn-danger" href="{{ route('roles.destroy', $role->id)}}">Delete</a>
-     </td>
-  </tr>
- @endforeach
-</table>
-
-
-<div class="col-12">
-    <div class='pagination-container'>
-        {!! $data->links() !!}
+@foreach ($role as $role)
+<div class="container mt-4">
+  <form method="POST" action="{{ route('roles.update', ['id' => $role->id])}}">
+      @csrf
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Name:</strong>
+            <input type="text" placeholder='Name' name='name' class="form-control" value="{{$role->name}}">
+        </div>
+        <div class="form-group">
+            <strong>Permission</strong>
+            <select class="form-control select2" name="permission[]" multiple="multiple">
+                @foreach($role->permissions as $value)
+                    <option value="{{$value->name}}" selected>{{$value->name}}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
-
+    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Role:</strong>
+            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
+        </div>
+    </div> --}}
+    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+  </form>
 </div>
+@endforeach
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function(){
+            $('.select2').select2({
+                tags: true,
+                placeholder: "Select an option",
+                allowClear: true,
+                tokenSeparators: [',']
+            });
+        });
+
+    </script>
 @endsection

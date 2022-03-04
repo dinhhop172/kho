@@ -29,7 +29,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white active bg-gradient-primary" href="{{ route('roles.index') }}">
+        <a class="nav-link text-white " href="{{ route('roles.index') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">table_view</i>
           </div>
@@ -37,11 +37,11 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white " href="{{ route('categories.index') }}">
+        <a class="nav-link text-white active bg-gradient-primary" href="{{ route('categories.index') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">table_view</i>
           </div>
-          <span class="nav-link-text ms-1">Manage Users</span>
+          <span class="nav-link-text ms-1">Manage Category</span>
         </a>
       </li>
       <li class="nav-item">
@@ -125,11 +125,6 @@
     <td>{{ $role->id }}</td>
     <td>{{ $role->name }}</td>
     <td>
-        @if(!empty($role->permissions))
-            @foreach($role->permissions as $v)
-            <label class="badge badge-success">{{ $v->name }},</label>
-            @endforeach
-        @endif
     </td>
 
     <td>
@@ -143,9 +138,9 @@
 
 
 <div class="col-12">
-    <div class='pagination-container'>
+    {{-- <div class='pagination-container'>
         {!! $data->links() !!}
-    </div>
+    </div> --}}
 
 </div>
 @endsection

@@ -46,6 +46,16 @@ Auth::routes();
         Route::get('/{id}/delete', [App\Http\Controllers\RoleController::class, 'destroy'])->name('roles.destroy');
         Route::get('/search', [App\Http\Controllers\RoleController::class, 'search'])->name('roles.search');
     });
+    Route::group(['prefix' => 'categories', 'middleware' => 'auth'], function () {
+        Route::get('/', [App\Http\Controllers\CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/show/{id}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
+        Route::get('create', [App\Http\Controllers\CategoryController::class, 'create'])->name('categories.create');
+        Route::post('store', [App\Http\Controllers\CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/{id}/edit', [App\Http\Controllers\CategoryController::class, 'edit'])->name('categories.edit');
+        Route::post('/{id}/update', [App\Http\Controllers\CategoryController::class, 'update'])->name('categories.update');
+        Route::get('/{id}/delete', [App\Http\Controllers\CategoryController::class, 'destroy'])->name('categories.destroy');
+        Route::get('/search', [App\Http\Controllers\CategoryController::class, 'search'])->name('categories.search');
+    });
 
 
 // Route::get('asd', [RoleController::class], 'index')->name('roles.index');

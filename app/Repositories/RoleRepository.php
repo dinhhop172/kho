@@ -52,62 +52,44 @@ class RoleRepository
             ->where('id', $id)
             ->get();
     }
+
+    /**
+     * Get one
+     * @param $id
+     * @return mixed
+     */
+    public function findOrFail($id)
+    {
+        return $this->role->findOrFail($id);
+    }
+
     /**
      * save
      *
      * @param  mixed $data
      * @return void
      */
-    public function save($data)
+    public function save($request)
     {
-        try {
-            DB::beginTransaction();
-            $role = $this->role->create($data);
-            if (!empty(request()->permission)) {
-                foreach(request()->permission as $item) {
-                    $perInstance = $this->permission->firstOrCreate(['name' => $item, 'slug' => Str::slug($item)]);
-                    $perIds[] = $perInstance->id;
-                }
-                $role->permissions()->attach($perIds);
-            }
-            DB::commit();
-            return $role;
-        } catch (Exception $e) {
-            DB::rollback();
-            Log::error($e->getMessage());
-            throw new Exception('Error Processing Request');
-        }
-
+        return $this->role->create($request);
     }
 
     /**
      * update
      *
-     * @param  mixed $data
+     * @param  mixed $request
      * @param  mixed $id
      * @return void
      */
-    public function update($data, $id)
+    public function update($request, $id)
     {
-        try {
-            DB::beginTransaction();
-            $this->role->findOrFail($id)->update($data);
-            $role = $this->role->findOrFail($id);
-            if (!empty(request()->permission)) {
-                foreach(request()->permission as $item) {
-                    $perInstance = $this->permission->firstOrCreate(['name' => $item, 'slug' => Str::slug($item)]);
-                    $perIds[] = $perInstance->id;
-                }
-                $role->permissions()->sync($perIds);
-            }
-            DB::commit();
-            return $role;
-        } catch (Exception $e) {
-            DB::rollback();
-            Log::error($e->getMessage());
-            throw new Exception('Error Processing Request');
+        $result = $this->role->findOrFail($id);
+        if ($result) {
+            $result->update($request);
+            return $result;
         }
 
+        return false;
     }
 
     /**

@@ -56,32 +56,25 @@ class RoleController extends Controller
      */
     public function store(CreateRoleRequest $request)
     {
-        $data = [
-            'name' => $request->name,
-            'slug' => Str::slug($request->name)
-        ];
-        $this->roleService->getCreate($data);
+        $this->roleService->create($request);
         return redirect(route('roles.index'));
     }
+
     public function edit($id)
     {
         $role = $this->roleService->getById($id);
         $per = Permission::all();
-
         return view('roles.edit' , compact('role', 'per'));
     }
+
     public function update(UpdateRoleRequest $request, $id)
     {
-        $data = [
-            'name' => $request->name,
-            'slug' => Str::slug($request->name)
-        ];
-        $this->roleService->getUpdate($data, $id);
+        $this->roleService->update($request, $id);
         return redirect(route('roles.index'));
     }
     public function destroy($id)
     {
-        $this->roleService->getDestroy($id);
+        $this->roleService->destroy($id);
         return redirect(route('roles.index'));
     }
 

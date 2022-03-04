@@ -16,14 +16,10 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        // factory(App\Models\Permission::class, 10)->create();
-        // Permission::factory()->count(1)->create();
         DB::table('roles')->insert([
-            ['name'=>'Super admin','slug'=>'SUPER ADMIN'],
-            ['name'=>'admin','slug'=>'ADMIN'],
-            ['name'=>'Nhân viên','slug'=>'EMPLOYEE'],
-            ['name'=>'Nguời dùng','slug'=>'USER']
-            ,
+            ['name'=>'Super admin','slug'=>'super-admin'],
+            ['name'=>'Admin','slug'=>'admin'],
+            ['name'=>'User','slug'=>'user']
         ]);
         DB::table('permissions')->insert([
             ['name' => 'Xem quyền', 'slug' => 'view-permission',],

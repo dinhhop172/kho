@@ -18,12 +18,9 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-
     public function index()
     {
         $data = $this->userService->getAll();
-        // auth()->user()->givePermissionTo('edit articles', 'delete articles', 'create articles');
-        // $user->assignRole('writer');
         return view('users.index' , ['data' => $data]);
     }
 
@@ -54,24 +51,22 @@ class UserController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        $data = $request->all();
-        $data['password'] = Hash::make($data['password']);
-        $this->userService->getCreate($data);
+        $this->userService->save($request);
         return redirect(route('users.index'));
     }
+    
     public function edit($id)
     {
         $user = $this->userService->getById($id);
-
         return view('users.edit' , compact('user'));
     }
+
     public function update(UpdateUserRequest $request, $id)
     {
-        $data = $request->all();
-        $data['password'] = Hash::make($data['password']);
-        $this->userService->getUpdate($data, $id);
+        $this->userService->getUpdate($request, $id);
         return redirect(route('users.index'));
     }
+
     public function destroy($id)
     {
         $this->userService->getDestroy($id);

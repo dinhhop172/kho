@@ -125,12 +125,12 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Password:</strong>
-            <input type="password" placeholder='Password' name='password' class="form-control" value="{{$user->password}}">        </div>
+            <input type="password" placeholder='Password' name='password' class="form-control">        </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Confirm Password:</strong>
-            <input type="password" placeholder='Password' name='re_password' class="form-control" value="{{$user->password}}">        </div>
+            <input type="password" placeholder='Password' name='re_password' class="form-control">        </div>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">

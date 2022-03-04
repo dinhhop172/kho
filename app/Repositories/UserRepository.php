@@ -18,21 +18,13 @@ class UserRepository
     protected $user;
 
     /**
-     * role
-     *
-     * @var mixed
-     */
-    protected $role;
-
-    /**
      * UserRepository constructor.
      *
      * @param User $user
      */
-    public function __construct(User $user, Role $role)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->role = $role;
     }
 
     /**
@@ -59,6 +51,17 @@ class UserRepository
             ->where('id', $id)
             ->get();
     }
+
+    /**
+     * Get one
+     * @param $id
+     * @return mixed
+     */
+    public function findOrFail($id)
+    {
+        return $this->user->findOrFail($id);
+    }
+
     /**
      * save
      *
@@ -67,23 +70,7 @@ class UserRepository
      */
     public function save($data)
     {
-        try {
-            DB::beginTransaction();
-            $user = $this->user->create($data);
-            if(!empty(request()->roles)){
-                foreach(request()->roles as $item){
-                    $roleInstance = $this->role->firstOrCreate(['name' => $item, 'slug' => Str::slug($item)]);
-                    $perIds[] = $roleInstance->id;
-                }
-                $user->roles()->attach($perIds);
-            }
-            DB::commit();
-            return $user;
-        } catch (Exception $e) {
-            DB::rollback();
-            Log::error($e->getMessage());
-            throw new Exception('Error Processing Request');
-        }
+        return $this->user->create($data);
     }
 
     /**
@@ -95,24 +82,13 @@ class UserRepository
      */
     public function update($data, $id)
     {
-        try {
-            DB::beginTransaction();
-            $this->user->findOrFail($id)->update($data);
-            $user = $this->user->findOrFail($id);
-            if (!empty(request()->roles)) {
-                foreach(request()->roles as $item) {
-                    $roleInstance = $this->role->firstOrCreate(['name' => $item, 'slug' => Str::slug($item)]);
-                    $roleIds[] = $roleInstance->id;
-                }
-                $user->roles()->sync($roleIds);
-            }
-            DB::commit();
-            return $user;
-        } catch (Exception $e) {
-            DB::rollback();
-            Log::error($e->getMessage());
-            throw new Exception('Error Processing Request');
+        $result = $this->user->findOrFail($id);
+        if ($result) {
+            $result->update($data);
+            return $result;
         }
+
+        return false;
     }
 
     /**

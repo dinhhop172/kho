@@ -85,7 +85,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Create New Role</h2>
+            <h2>Create New Category</h2>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
@@ -107,48 +107,34 @@
 
 
 <div class="container mt-4">
-  <form method="POST" action="{{route('roles.store')}}">
+  <form method="POST" action="{{route('categories.store')}}">
       @csrf
     <div class="col-xs-12 col-sm-12 col-md-12">
-        {{-- <div class="form-group">
-            <strong>Name:</strong>
-            {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
-        </div> --}}
         <div class="form-group">
-            <strong>Name:</strong>
+            <strong>Category name</strong>
             <input type="text" name="name" class="form-control" placeholder="Name">
         </div>
         <div class="form-group">
-          <strong>Permission</strong>
-          <select class="form-control select2" name="permission[]" multiple="multiple">
-            @foreach($permissions as $value)
-                <option value="{{$value->name}}">{{$value->name}}</option>
-            @endforeach
+          <strong>Select parent category</strong>
+          <select class="form-control" name="parent_id">
+            <option value="">None</option>
+            @if($categories)
+            @php
+                $space = "";
+            @endphp
+                @foreach($categories as $value)
+                    <option value="{{$value->id}}">{{$value->name}}</option>
+                    @if(count($value->children) > 0)
+                        @include('categories.children',['children' => $value->children])
+                    @endif
+                @endforeach
+            @endif
           </select>
         </div>
     </div>
-    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Role:</strong>
-            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
-        </div>
-    </div> --}}
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
 </div>
-
-@endsection
-@section('js')
-    <script>
-        $(document).ready(function(){
-            $('.select2').select2({
-                placeholder: "Choose some permission",
-                tags: true,
-                allowClear: true,
-                tokenSeparators: [',']
-            });
-        });
-    </script>
 @endsection

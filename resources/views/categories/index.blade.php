@@ -97,8 +97,8 @@
             <h2>Roles Management</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
-            <form action="{{route('roles.search')}}" method="get">
+            <a class="btn btn-success" href="{{ route('categories.create') }}"> Create New Category</a>
+            <form action="{{route('categories.search')}}" method="get">
               <input type="text" name="search" placeholder="search name...">
             </form>
         </div>
@@ -120,17 +120,16 @@
    <th>Permission</th>
    <th>Action</th>
  </tr>
- @foreach ($data as $key => $role)
+ @foreach ($categories as $key => $category)
   <tr>
-    <td>{{ $role->id }}</td>
-    <td>{{ $role->name }}</td>
+    <td>{{ $category->id }}</td>
+    <td>{{ $category->name }}</td>
     <td>
     </td>
 
     <td>
-        {{-- <a class="btn btn-info" href="{{route('users.show', ['id' => $user->id])}}">Show</a> --}}
-        <a class="btn btn-info" href="{{ route('roles.edit', $role->id)}}">Edit</a>
-        <a class="btn btn-danger" href="{{ route('roles.destroy', $role->id)}}">Delete</a>
+        <a class="btn btn-info" href="{{ route('categories.edit', $category->id)}}">Edit</a>
+        <a class="btn btn-danger" href="{{ route('categories.destroy', $category->id)}}">Delete</a>
      </td>
   </tr>
  @endforeach
@@ -138,9 +137,9 @@
 
 
 <div class="col-12">
-    {{-- <div class='pagination-container'>
-        {!! $data->links() !!}
-    </div> --}}
+    <div class='pagination-container'>
+        {!! $categories->links() !!}
+    </div>
 
 </div>
 @endsection

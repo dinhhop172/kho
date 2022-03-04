@@ -15,4 +15,16 @@ class CategoryRepository extends BaseRepository
     {
         return Category::class;
     }
+
+    public function getParentCategory()
+    {
+        return $this->model->withParentIdNull()->get();
+    }
+
+    public function getParentCategoryWithout($id)
+    {
+        return $this->model->withParentIdNull()->withoutId($id)->get();
+    }
+
+
 }

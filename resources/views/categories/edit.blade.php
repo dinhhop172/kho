@@ -88,7 +88,7 @@
             <h2>Edit Role</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
+            <a class="btn btn-primary" href="{{ route('categories.index') }}"> Back</a>
         </div>
     </div>
 </div>
@@ -105,47 +105,35 @@
   </div>
 @endif
 
-@foreach ($role as $role)
 <div class="container mt-4">
-  <form method="POST" action="{{ route('roles.update', ['id' => $role->id])}}">
+  <form method="POST" action="{{ route('categories.update', ['id' => $category->id])}}">
       @csrf
       <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Name:</strong>
-            <input type="text" placeholder='Name' name='name' class="form-control" value="{{$role->name}}">
+            <input type="text" placeholder='Name' name='name' class="form-control" value="{{$category->name}}">
         </div>
         <div class="form-group">
-            <strong>Permission</strong>
-            <select class="form-control select2" name="permission[]" multiple="multiple">
-                @foreach($role->permissions as $value)
-                    <option value="{{$value->name}}" selected>{{$value->name}}</option>
-                @endforeach
+            <strong>Select a parent cateogory</strong>
+            <select class="form-control" name="parent_id">
+                <option value="">None</option>
+                @php
+                    $space = '';
+                @endphp
+                @if($categories)
+                    @foreach($categories as $item)
+                        <option value="{{$item->id}}" {{$item->id == $category->parent_id ? 'selected' : ''}}>{{$item->name}}</option>
+                        @if(count($item->children) > 0)
+                            @include('categories.children_update', ['children' => $item->children])
+                        @endif
+                    @endforeach
+                @endif
             </select>
         </div>
     </div>
-    {{-- <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Role:</strong>
-            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
-        </div>
-    </div> --}}
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
         <button type="submit" class="btn btn-primary">Update</button>
     </div>
   </form>
 </div>
-@endforeach
-@endsection
-@section('js')
-    <script>
-        $(document).ready(function(){
-            $('.select2').select2({
-                tags: true,
-                placeholder: "Select an option",
-                allowClear: true,
-                tokenSeparators: [',']
-            });
-        });
-
-    </script>
 @endsection

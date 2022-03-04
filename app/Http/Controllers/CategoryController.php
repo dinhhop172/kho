@@ -20,8 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = $this->categoryService->getAll();
-        return view('categories.index', compact('data'));
+        $categories = $this->categoryService->paginate();
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -31,7 +31,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = $this->categoryService->getParentCategory();
+        return view('categories.create', compact('categories'));
     }
 
     /**
@@ -42,18 +43,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $this->categoryService->create($request);
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -64,7 +55,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = $this->categoryService->findOrFail($id);
+        $categories = $this->categoryService->getParentCategoryWithout($category->id);
+        return view('categories.edit', compact('category', 'categories'));
     }
 
     /**
@@ -76,7 +69,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->categoryService->update($request, $id);
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -87,6 +81,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->categoryService->destroy($id);
+        return redirect()->route('categories.index');
     }
 }
